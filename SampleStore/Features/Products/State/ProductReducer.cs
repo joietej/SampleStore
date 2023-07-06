@@ -2,7 +2,7 @@ using SampleStore.Core.Store;
 
 namespace SampleStore.Features.Products.State;
 
-public class ProductReducer: IReducer<ProductState>
+public class ProductReducer : IReducer<ProductState>
 {
     public ProductState Execute(ProductState state, IAction action)
     {

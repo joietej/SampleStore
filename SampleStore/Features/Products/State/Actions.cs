@@ -14,11 +14,13 @@ public readonly record struct LoadProducts() : IAction
 {
     public string Type => ProductActionType.PRODUCTS_LOAD;
 }
-public readonly record struct LoadProductsSuccess( Product[] Products) : IAction
+
+public readonly record struct LoadProductsSuccess(Product[] Products) : IAction
 {
     public string Type => ProductActionType.PRODUCTS_LOADED_SUCCESS;
 }
-public readonly record struct LoadProductsError( string Error) : IAction
+
+public readonly record struct LoadProductsError(string Error) : IAction
 {
     public string Type => ProductActionType.PRODUCTS_LOADED_ERROR;
 }

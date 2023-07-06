@@ -3,9 +3,10 @@ using SampleStore.Features.Products.Services;
 
 namespace SampleStore.Features.Products.State;
 
-public class LoadProductsEffect: IEffect
+public class LoadProductsEffect : IEffect
 {
     public string Action => ProductActionType.PRODUCTS_LOAD;
+
     public IAction? Execute(IAction action)
     {
         try
@@ -24,6 +25,7 @@ public class LoadProductsEffect: IEffect
 public class LoadProductsSuccessEffect : IEffect
 {
     public string Action => ProductActionType.PRODUCTS_LOADED_SUCCESS;
+
     public IAction? Execute(IAction action)
     {
         if (action is not LoadProductsSuccess act) return null;

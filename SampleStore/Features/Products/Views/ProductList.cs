@@ -5,17 +5,16 @@ using SampleStore.Features.Products.State;
 
 namespace SampleStore.Features.Products.Views;
 
-public class ProductList: StatefulView<ProductState>
+public class ProductList : StatefulView<ProductState>
 {
-   
     private Product[] _products;
     private bool _isLoading;
 
-    public ProductList(Store<ProductState> store): base(store)
+    public ProductList(Store<ProductState> store) : base(store)
     {
         Disptach(new LoadProducts());
     }
-    
+
 
     protected override void SelectFromState(ProductState state)
     {
@@ -26,7 +25,7 @@ public class ProductList: StatefulView<ProductState>
     protected override void Render()
     {
         Console.WriteLine("Products List");
-        
+
         if (_isLoading)
         {
             Console.WriteLine("Loading...");

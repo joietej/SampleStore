@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Products" />
-      <Folder Include="obj\Debug\net7.0\" />
+        <Folder Include="Features\Products"/>
+        <Folder Include="obj\Debug\net7.0\"/>
     </ItemGroup>
 
 </Project>
