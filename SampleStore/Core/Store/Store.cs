@@ -3,14 +3,12 @@ using System.Reflection;
 
 namespace SampleStore.Core.Store;
 
-public class Store<TState> : IDisposable where TState : struct
+public sealed class Store<TState> : IDisposable where TState : struct
 {
-    private TState _initialState;
-    private TState _state;
+    private readonly TState _initialState;
     private readonly IReducer<TState> _reducer;
-    private event EventHandler<IAction> ActionEvent;
-    private event EventHandler<TState> StateChanged;
     private IEffect[] _effects;
+    private TState _state;
 
     public Store(TState initialState, IReducer<TState> reducer, params IEffect[] effects)
     {
@@ -23,23 +21,22 @@ public class Store<TState> : IDisposable where TState : struct
 
     public TState InitialState => _initialState;
 
+    public void Dispose()
+    {
+        ActionEvent -= OnAction;
+    }
+
+    private event EventHandler<IAction> ActionEvent;
+    private event EventHandler<TState>? StateChanged;
+
     public void SubscribeStateChanged(EventHandler<TState> callback)
     {
         StateChanged += callback;
     }
 
-    public void UnsubscribeStateChanged(EventHandler<TState> callback)
+    public void UnsubscribeStateChanged()
     {
-        StateChanged -= callback;
-    }
-
-    public void OnAction(object? sender, IAction action)
-    {
-        _state = _reducer.Execute(_state, action);
-        OnStateChanged(_state);
-        var effect = _effects.FirstOrDefault(e => e.Action == action.Type);
-        var newAction = effect?.Execute(action);
-        if (newAction != null) Dispatch(newAction);
+        StateChanged = null;
     }
 
     public void Dispatch(IAction action)
@@ -55,12 +52,16 @@ public class Store<TState> : IDisposable where TState : struct
         return value != null ? (TResult) value : default;
     }
 
-    public void Dispose()
+    private void OnAction(object? sender, IAction action)
     {
-        ActionEvent -= OnAction;
+        _state = _reducer.Execute(_state, action);
+        OnStateChanged(_state);
+        var effect = _effects.FirstOrDefault(e => e.Action == action.Type);
+        var newAction = effect?.Execute(action);
+        if (newAction != null) Dispatch(newAction);
     }
 
-    protected virtual void OnStateChanged(TState e)
+    private void OnStateChanged(TState e)
     {
         StateChanged?.Invoke(this, e);
     }

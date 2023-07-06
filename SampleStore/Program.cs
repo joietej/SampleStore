@@ -6,7 +6,7 @@ using SampleStore.Features.Products.State;
 using SampleStore.Features.Products.Views;
 
 var initialState = new ProductState(Array.Empty<Product>(), false, string.Empty);
-var store = new Store<ProductState>(initialState,
+using var store = new Store<ProductState>(initialState,
     new ProductReducer(),
     new LoadProductsEffect(),
     new LoadProductsSuccessEffect());

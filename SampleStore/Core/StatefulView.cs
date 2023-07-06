@@ -2,7 +2,7 @@ using SampleStore.Core.Store;
 
 namespace SampleStore.Core;
 
-public abstract class StatefulView<TState> where TState : struct
+public abstract class StatefulView<TState>: IDisposable where TState : struct
 {
     private readonly Store<TState> _store;
 
@@ -26,4 +26,10 @@ public abstract class StatefulView<TState> where TState : struct
 
     protected abstract void SelectFromState(TState state);
     protected abstract void Render();
+
+    public void Dispose()
+    {
+        _store.UnsubscribeStateChanged();
+        _store.Dispose();
+    }
 }

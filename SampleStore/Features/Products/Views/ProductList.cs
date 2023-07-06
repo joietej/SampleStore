@@ -7,7 +7,7 @@ namespace SampleStore.Features.Products.Views;
 
 public class ProductList : StatefulView<ProductState>
 {
-    private Product[] _products;
+    private Product[]? _products;
     private bool _isLoading;
 
     public ProductList(Store<ProductState> store) : base(store)
@@ -32,15 +32,15 @@ public class ProductList : StatefulView<ProductState>
             return;
         }
 
-        if (_products.Length == 0)
+        if (_products?.Length == 0)
         {
             Console.WriteLine("No Products");
         }
         else
         {
-            foreach (var product in _products)
+            foreach (var product in _products!)
             {
-                Console.WriteLine($"{product.Name}: {product.Price} ");
+                Console.WriteLine($"{product.Category} :: {product.Id} {product.Name}: {product.Price}");
             }
         }
     }

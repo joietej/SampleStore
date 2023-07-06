@@ -5,14 +5,14 @@ namespace SampleStore.Features.Products.State;
 
 public class LoadProductsEffect : IEffect
 {
-    public string Action => ProductActionType.PRODUCTS_LOAD;
+    public string Action => ProductActionType.ProductsLoad;
 
     public IAction? Execute(IAction action)
     {
         try
         {
-            if (action is not LoadProducts act) return null;
-            var products = new ProductService().GetAll();
+            if (action is not LoadProducts) return null;
+            var products = ProductService.GetAll();
             return new LoadProductsSuccess(products.ToArray());
         }
         catch (Exception e)
@@ -24,7 +24,7 @@ public class LoadProductsEffect : IEffect
 
 public class LoadProductsSuccessEffect : IEffect
 {
-    public string Action => ProductActionType.PRODUCTS_LOADED_SUCCESS;
+    public string Action => ProductActionType.ProductsLoadedSuccess;
 
     public IAction? Execute(IAction action)
     {
